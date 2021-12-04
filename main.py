@@ -1,16 +1,21 @@
-# This is a sample Python script.
+import telebot
+from telebot import types
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import botconfig
+import handlers
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+bot = telebot.TeleBot(botconfig.token)
 
 
-# Press the green button in the gutter to run the script.
+@bot.message_handler(commands=['start', 'help'])
+def welcome(message: types.Message):
+    handlers.welcome(bot, message)
+
+
+@bot.message_handler(func=lambda m: True)
+def question(message: types.Message):
+    handlers.question(bot, message)
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    bot.infinity_polling()
